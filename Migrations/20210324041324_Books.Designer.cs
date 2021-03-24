@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bookcaseApi.Contexts;
 
 namespace bookcaseApi.Migrations
 {
     [DbContext(typeof(BookCaseDbContext))]
-    partial class BookCaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210324041324_Books")]
+    partial class Books
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

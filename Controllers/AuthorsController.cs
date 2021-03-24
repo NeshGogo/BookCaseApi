@@ -19,15 +19,19 @@ namespace bookcaseApi.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public ActionResult<IEnumerable<Author>> Get()
         {
-            return _context.Authors.ToList();
+            return _context.Authors.Include(a => a.Books).ToList();
         }
+
         [HttpGet("{id}", Name = "GetAuthor")]
         public ActionResult<Author> Get(int id )
         {
-            var author = _context.Authors.FirstOrDefault(a => a.Id == id);
+            var author = _context.Authors
+                .Include(a => a.Books)
+                .FirstOrDefault(a => a.Id == id);
             
             if(author == null)          
                 return NotFound();
@@ -38,7 +42,7 @@ namespace bookcaseApi.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Author author)
         {
-            _context.Add(author);
+            _context.Authors.Add(author);
             _context.SaveChanges();
             return new CreatedAtRouteResult("GetAuthor", new { id = author.Id }, author);
         }
@@ -53,6 +57,7 @@ namespace bookcaseApi.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
         [HttpDelete("{id}")]
         public ActionResult<Author> Delete(int id)
         {
