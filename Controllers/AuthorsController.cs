@@ -1,5 +1,6 @@
 ﻿using bookcaseApi.Contexts;
 using bookcaseApi.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,6 +19,20 @@ namespace bookcaseApi.Controllers
         public AuthorsController(BookCaseDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("CurrentSecond")]
+        [ResponseCache(Duration = 15)]
+        public ActionResult<string> CurrentSecond()
+        {
+            return DateTime.Now.Second.ToString();
+        }
+
+        [HttpGet("List")]
+        [Authorize]
+        public ActionResult<IEnumerable<Author>> List()
+        {
+            return _context.Authors.Include(a => a.Books).ToList();
         }
 
         [HttpGet]

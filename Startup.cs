@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bookcaseApi.Contexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,11 @@ namespace bookcaseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Agregando servicio de cache.
+            services.AddResponseCaching();
+            // Agregando servicio de JWT
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
             services.AddDbContext<BookCaseDbContext>( options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
             services.AddControllers()
@@ -46,6 +52,9 @@ namespace bookcaseApi
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
+            // Agregamos el middleware the cache.
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {

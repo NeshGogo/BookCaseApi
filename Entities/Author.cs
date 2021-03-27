@@ -11,7 +11,7 @@ namespace bookcaseApi.Entities
     {
         public int Id { get; set; }
         [Required]
-        /*[FirstLetterUpperCase]*/
+        /*[FirstLetterUpperCase]*/ //Esta es una validacion por atributo.
         public string Name { get; set; }
         public List<Book> Books { get; set; }
 
