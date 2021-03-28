@@ -1,0 +1,5 @@
+WriteToFile2HostedService 2 : Process Started 3/27/2021 9:45:37 PM
+WriteToFile2HostedService 2 : Process working 3/27/2021 9:45:37 PM
+WriteToFile2HostedService 2 : Process working 3/27/2021 9:45:55 PM
+WriteToFile2HostedService 2 : Process working 3/27/2021 9:46:13 PM
+WriteToFile2HostedService 2 : Process Stop 3/27/2021 9:46:23 PM

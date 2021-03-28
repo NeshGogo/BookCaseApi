@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace bookcaseApi.Services
 {
-    public class WriteToFileHostedService : IHostedService, IDisposable
+    public class WriteToFile2HostedService : IHostedService, IDisposable
     {
         private readonly IHostEnvironment _environment;
-        private readonly string _fileName = "File 1.txt";
+        private readonly string _fileName = "File 2.txt";
         private Timer timer;
 
-        public WriteToFileHostedService(IHostEnvironment environment)
+        public WriteToFile2HostedService(IHostEnvironment environment)
         {
             
             _environment = environment;
@@ -22,20 +22,20 @@ namespace bookcaseApi.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            WriteToFile($"WriteToFIleHostedService 1 : Process Started {DateTime.Now}");
-            timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+            WriteToFile($"WriteToFile2HostedService 2 : Process Started {DateTime.Now}");
+            timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(18));
   
             return Task.CompletedTask;
         }
 
         private void DoWork(object state)
         {
-            WriteToFile($"WriteToFIleHostedService 1 : Process working {DateTime.Now}");
+            WriteToFile($"WriteToFile2HostedService 2 : Process working {DateTime.Now}");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            WriteToFile($"WriteToFIleHostedService 1 : Process Stop {DateTime.Now}");
+            WriteToFile($"WriteToFile2HostedService 2 : Process Stop {DateTime.Now}");
             timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
