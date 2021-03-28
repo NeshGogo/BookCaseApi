@@ -1,5 +1,6 @@
 ﻿using bookcaseApi.Contexts;
 using bookcaseApi.Entities;
+using bookcaseApi.helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace bookcaseApi.Controllers
 
         [HttpGet("CurrentSecond")]
         [ResponseCache(Duration = 15)]
+        [ServiceFilter(typeof(CustomFilterToAction))]
         public ActionResult<string> CurrentSecond()
         {
             return DateTime.Now.Second.ToString();
