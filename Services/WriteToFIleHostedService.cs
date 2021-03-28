@@ -36,7 +36,7 @@ namespace bookcaseApi.Services
             WriteToFile($"WriteToFIleHostedService 1 : Process working {DateTime.Now}");
             
             // Asi es como creamos una tarea recurrente con entitiframework
-            using (var scope = Services.CreateScope())
+            /*using (var scope = Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<BookCaseDbContext>();
                 var book = new Book
@@ -46,7 +46,7 @@ namespace bookcaseApi.Services
                 };
                 context.Books.Add(book);
                 context.SaveChanges();
-            }
+            }*/
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

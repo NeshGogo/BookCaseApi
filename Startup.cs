@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bookcaseApi.Contexts;
+using bookcaseApi.Entities;
 using bookcaseApi.helpers;
+using bookcaseApi.Models;
 using bookcaseApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -30,18 +32,30 @@ namespace bookcaseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Agregando AutoMapper
+            services.AddAutoMapper(configuration =>
+            {
+                configuration.CreateMap<Author, AuthorDTO>();
+                configuration.CreateMap<AuthorCreateDTO, Author>().ReverseMap();// Permite mapear en ambas direcciones;
+                configuration.CreateMap<Book, BookDTO>();
+            }, typeof(Startup));
+
             // Agregando IHostedService
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFile2HostedService>();
+
             // Agregando el custom filter
             services.AddScoped<CustomFilterToAction>();
+
             //Agregando servicio de cache.
             services.AddResponseCaching();
+
             // Agregando servicio de JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
             services.AddDbContext<BookCaseDbContext>( options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+           
             services.AddControllers( options => {
                 options.Filters.Add(new MyExceptionFilter());
                 // Si hubiese inyeccion de dependencias en el filtro.
