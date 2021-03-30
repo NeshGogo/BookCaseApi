@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,7 @@ namespace bookcaseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             // Agregando AutoMapper
             services.AddAutoMapper(configuration =>
             {
@@ -47,12 +49,19 @@ namespace bookcaseApi
             // Agregando el custom filter
             services.AddScoped<CustomFilterToAction>();
 
-            //Agregando servicio de cache.
+            // Agregando servicio de cache.
             services.AddResponseCaching();
 
             // Agregando servicio de JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
+
+            // Agregando Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<BookCaseDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Agregando el context de la DB
             services.AddDbContext<BookCaseDbContext>( options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
            
