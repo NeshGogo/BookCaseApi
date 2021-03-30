@@ -1,5 +1,7 @@
 ﻿using bookcaseApi.Contexts;
 using bookcaseApi.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +13,8 @@ namespace bookcaseApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // Asi es como indicamos que requerimos la authenticacion por jwt.
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BooksController: ControllerBase
     {
         private readonly BookCaseDbContext _context;

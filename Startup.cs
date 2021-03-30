@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using bookcaseApi.Contexts;
 using bookcaseApi.Entities;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace bookcaseApi
 {
@@ -52,9 +54,18 @@ namespace bookcaseApi
             // Agregando servicio de cache.
             services.AddResponseCaching();
 
-            // Agregando servicio de JWT
+            // Agregando servicio de JWT. Asi es como se configura para la uthorizacion.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer();
+                .AddJwtBearer( options => 
+                options.TokenValidationParameters = new TokenValidationParameters { 
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(Configuration["JWT:Key"])),
+                    ClockSkew = TimeSpan.Zero
+                });
 
             // Agregando Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -86,6 +97,7 @@ namespace bookcaseApi
             app.UseRouting();
 
             app.UseAuthorization();
+            //Agregamos nuestro middleware de autenticacion
             app.UseAuthentication();
             // Agregamos el middleware the cache.
             app.UseResponseCaching();

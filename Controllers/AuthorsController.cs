@@ -3,6 +3,7 @@ using bookcaseApi.Contexts;
 using bookcaseApi.Entities;
 using bookcaseApi.helpers;
 using bookcaseApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -36,13 +37,16 @@ namespace bookcaseApi.Controllers
         }
 
         [HttpGet("List")]
-        [Authorize]
+        // Asi es como indicamos que requerimos la authenticacion por jwt.
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         public ActionResult<IEnumerable<Author>> List()
         {
             return _context.Authors.Include(a => a.Books).ToList();
         }
 
         [HttpGet]
+        // Asi es como indicamos que requerimos la authenticacion por jwt.
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<AuthorDTO>>> Get()
         {
             var authors = await _context.Authors.Include(a => a.Books).ToListAsync();

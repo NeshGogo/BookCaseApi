@@ -14,8 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace bookcaseApi.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
